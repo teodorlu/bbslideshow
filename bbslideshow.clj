@@ -1,7 +1,9 @@
 #!/usr/bin/env bb
 
 (ns bbslideshow
-  (:require [babashka.fs :as fs]))
+  (:require
+   [babashka.fs :as fs]
+   [babashka.process :as process]))
 
 (def slide-top-padding 20)
 (def slides-glob-pattern "**/*.slide.txt")
@@ -24,11 +26,25 @@
       (println))
     (print (slurp (fs/file slide)))))
 
+(defn enable-reading-char-by-char! []
+  (process/shell "stty -icanon -echo"))
+
+(defn disable-reading-char-by-char! []
+  (process/shell "stty icanon echo"))
+
 (defn -main [& args]
   (let [root (or (first args) ".")
         slides (->> (slide-files root slides-glob-pattern)
                     (mapv str))]
-    (navigate-loop slides 0)))
+    (try
+      (enable-reading-char-by-char!)
+      (navigate-loop slides 0)
+      (finally
+        (disable-reading-char-by-char!)))))
+
+(defn -debug [& _args]
+  (prn 'debug))
 
 (when (= *file* (System/getProperty "babashka.file"))
-  (apply -main *command-line-args*))
+  (apply (if (= "--debug" (first *command-line-args*)) -debug -main)
+         *command-line-args*))
