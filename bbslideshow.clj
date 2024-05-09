@@ -42,8 +42,20 @@
       (finally
         (disable-reading-char-by-char!)))))
 
+(def keymap
+  {\j :bbslideshow/next-slide
+   \k :bbslideshow/prev-slide
+   \q :bbslideshow/quit
+   \f :bbslideshow/find-slide
+   \s :bbslideshow/interactive-babashka-shell})
+
+(char 103)
+(int \k)
+
 (defn -debug [& _args]
-  (prn 'debug))
+  (let [k (.read System/in)]
+    (prn [k (type k)])
+    (prn (get keymap (char k) :bbslideshow/command-not-found))))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (apply (if (= "--debug" (first *command-line-args*)) -debug -main)
