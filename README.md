@@ -8,7 +8,7 @@ Supports quick navigation forwards & back, selecting any slide, and quickly laun
 
 1. Write your slides with the `.slide.txt` extension.
 2. Prefix a slide number.
-3. Run `bbslideshow`.
+3. Run `bbslideshow ROOT` to view a slideshow from `ROOT`. `ROOT` defaults to `.` (the current folder).
 
 `bbslidewhow` will find all slides in the current directory, and show and navigate between them.
 
