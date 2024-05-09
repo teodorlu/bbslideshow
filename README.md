@@ -43,3 +43,11 @@ I've installed `bbslideshow` on my machine as a symbolic link from `~/.local/bin
     ln -sf "$PWD/bbslideshow.clj" ~/.local/bin/bbslideshow
 
 (You may run `./install.sh` if you want to install `bbslideshow` in this exact way.)
+
+## Example slideshow
+
+To view the example slideshow, run
+
+    bbslideshow
+
+from this folder.
