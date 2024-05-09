@@ -3,6 +3,7 @@
 (ns bbslideshow
   (:require [babashka.fs :as fs]))
 
+(def slide-top-padding 40)
 (def slides-glob-pattern "**/*.slide.txt")
 
 (defn slide-files [root glob-pattern]
@@ -12,12 +13,16 @@
 
 (comment
 
-  (slide-files "." slides-glob-pattern)
+  (def example-slides (slide-files "." slides-glob-pattern))
+
+  (get example-slides 4)
   :rcf)
 
 (defn navigate-loop [slides current-index]
-
-  )
+  (when-let [slide (get slides current-index)]
+    (dotimes [_ 40]
+      (println))
+    (print (slurp (fs/file slide)))))
 
 (defn -main [& args]
   (let [root (or (first args) ".")]
