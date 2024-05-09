@@ -3,7 +3,7 @@
 (ns bbslideshow
   (:require [babashka.fs :as fs]))
 
-(def slide-top-padding 40)
+(def slide-top-padding 20)
 (def slides-glob-pattern "**/*.slide.txt")
 
 (defn slide-files [root glob-pattern]
@@ -20,13 +20,14 @@
 
 (defn navigate-loop [slides current-index]
   (when-let [slide (get slides current-index)]
-    (dotimes [_ 40]
+    (dotimes [_ slide-top-padding]
       (println))
     (print (slurp (fs/file slide)))))
 
 (defn -main [& args]
   (let [root (or (first args) ".")
-        slides (slide-files root slides-glob-pattern)]
+        slides (->> (slide-files root slides-glob-pattern)
+                    (mapv str))]
     (navigate-loop slides 0)))
 
 (when (= *file* (System/getProperty "babashka.file"))

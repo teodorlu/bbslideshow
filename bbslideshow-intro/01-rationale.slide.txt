@@ -1,8 +1,9 @@
 bbslideshow is made for people who are:
 
-- Proficient with Clojure programming
+- Program computers with Clojure
 - Want to communicate their ideas
-- Don't want to waste time in PowerPoint or Keynote
+- Feel like PowerPoint and Keynote is a waste of time
 
 Is this you?
 Press `j` to go to the next slide.
+Or press `q` to return to your world.
