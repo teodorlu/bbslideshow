@@ -37,14 +37,16 @@
 (defn -disable-reading-char-by-char! []
   (process/shell "stty icanon echo"))
 
-(defmacro with-stdin-char-by-char [& body]
+(defmacro with-stdin-char-by-char
+  [& body]
   `(try
      (-enable-reading-char-by-char!)
      ~@body
      (finally
        (-disable-reading-char-by-char!))))
 
-(defmacro with-stdin-line-by-line [& body]
+(defmacro with-stdin-line-by-line
+  [& body]
   `(try
      (-disable-reading-char-by-char!)
      ~@body
