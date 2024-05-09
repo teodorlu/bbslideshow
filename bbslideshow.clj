@@ -20,6 +20,17 @@
   (get example-slides 4)
   :rcf)
 
+(def keymap
+  {\j :bbslideshow/next-slide
+   \k :bbslideshow/prev-slide
+   \q :bbslideshow/quit
+   \f :bbslideshow/find-slide
+   \s :bbslideshow/interactive-babashka-shell})
+
+(comment
+  (char 103)
+  (int \k))
+
 (defn navigate-loop [slides current-index]
   (when-let [slide (get slides current-index)]
     (dotimes [_ slide-top-padding]
@@ -41,16 +52,6 @@
       (navigate-loop slides 0)
       (finally
         (disable-reading-char-by-char!)))))
-
-(def keymap
-  {\j :bbslideshow/next-slide
-   \k :bbslideshow/prev-slide
-   \q :bbslideshow/quit
-   \f :bbslideshow/find-slide
-   \s :bbslideshow/interactive-babashka-shell})
-
-(char 103)
-(int \k)
 
 (defn -debug [& _args]
   (let [k (.read System/in)]
