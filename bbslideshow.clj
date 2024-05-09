@@ -25,8 +25,9 @@
     (print (slurp (fs/file slide)))))
 
 (defn -main [& args]
-  (let [root (or (first args) ".")]
-    (prn (fs/canonicalize (fs/absolutize (fs/file root))))))
+  (let [root (or (first args) ".")
+        slides (slide-files root slides-glob-pattern)]
+    (navigate-loop slides 0)))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (apply -main *command-line-args*))
