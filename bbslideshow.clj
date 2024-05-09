@@ -31,6 +31,26 @@
   (char 103)
   (int \k))
 
+(defn -enable-reading-char-by-char! []
+  (process/shell "stty -icanon -echo"))
+
+(defn -disable-reading-char-by-char! []
+  (process/shell "stty icanon echo"))
+
+(defmacro with-stdin-char-by-char [& body]
+  `(try
+     (-enable-reading-char-by-char!)
+     ~@body
+     (finally
+       (-disable-reading-char-by-char!))))
+
+(defmacro with-stdin-line-by-line [& body]
+  `(try
+     (-disable-reading-char-by-char!)
+     ~@body
+     (finally
+       (-enable-reading-char-by-char!))))
+
 (defn navigate-loop [slides start-at-index]
   (loop [index start-at-index]
     (when-let [slide (get slides index)]
@@ -53,28 +73,17 @@
 
           (do (prn "command found") nil))))))
 
-(defn enable-reading-char-by-char! []
-    (process/shell "stty -icanon -echo"))
-
-(defn disable-reading-char-by-char! []
-  (process/shell "stty icanon echo"))
-
 (defn -main [& args]
   (let [root (or (first args) ".")
         slides (->> (slide-files root slides-glob-pattern)
                     (mapv str))]
-    (try
-      (enable-reading-char-by-char!)
-      (navigate-loop slides 0)
-      (finally
-        (disable-reading-char-by-char!)))))
+    (with-stdin-char-by-char (navigate-loop slides 0))))
 
 (defn -debug [& _args]
-  (enable-reading-char-by-char!)
-  (let [k (.read System/in)]
-    (prn [k (type k)])
-    (prn (get keymap (char k) :bbslideshow/command-not-found)))
-  (disable-reading-char-by-char!))
+  (with-stdin-char-by-char
+    (let [k (.read System/in)]
+      (prn [k (type k)])
+      (prn (get keymap (char k) :bbslideshow/command-not-found)))))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (apply (if (= "--debug" (first *command-line-args*)) -debug -main)
