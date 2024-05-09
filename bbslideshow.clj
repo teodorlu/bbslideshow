@@ -15,6 +15,10 @@
   (slide-files "." slides-glob-pattern)
   :rcf)
 
+(defn navigate-loop [slides current-index]
+
+  )
+
 (defn -main [& args]
   (let [root (or (first args) ".")]
     (prn (fs/canonicalize (fs/absolutize (fs/file root))))))
