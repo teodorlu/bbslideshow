@@ -1,0 +1,8 @@
+`bblideshow` is a single Babashka binary.
+
+If you want your own command, clone the repo and add your own command!
+
+Want to contribute an improvement?
+Download the script and make some changes.
+See if you like the changes.
+Then share your joy & findings in an issue!

@@ -1,0 +1,15 @@
+To resize text,
+
+    resize text from your terminal.
+
+To go to the next slide,
+
+    press `j`
+
+To go to the previous slide,
+
+   press `k`
+
+To go to any slide,
+
+   press `f`
