@@ -29,7 +29,10 @@
 
 (comment
   (char 103)
-  (int \k))
+  (int \k)
+  (char 10)
+  (char 127)
+  (char 32))
 
 (defn -enable-reading-char-by-char! []
   (process/shell "stty -icanon -echo"))
