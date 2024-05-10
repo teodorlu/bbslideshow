@@ -3,7 +3,8 @@
 (ns bbslideshow
   (:require
    [babashka.fs :as fs]
-   [babashka.process :as process]))
+   [babashka.process :as process]
+   [babashka.cli :as cli]))
 
 (def slide-top-padding 20)
 (def slides-glob-pattern "**/*.slide.txt")
@@ -78,18 +79,47 @@
 
           (do (prn "command found") nil))))))
 
-(defn -main [& args]
+(defn oldmain [& args]
   (let [root (or (first args) ".")
         slides (->> (slide-files root slides-glob-pattern)
                     (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides 0))))
 
-(defn -debug [& _args]
+(defn cmd-slideshow [opts]
+  (let [root (:root opts ".")
+        slides (->> (slide-files root slides-glob-pattern)
+                    (mapv str))]
+    (with-stdin-char-by-char (navigate-loop slides 0))))
+
+(defn cmd-debug [& _args]
   (with-stdin-char-by-char
     (let [k (.read System/in)]
       (prn [k (type k)])
       (prn (get keymap (char k) :bbslideshow/command-not-found)))))
 
+(defn cmd-doctor [_]
+  (let [bin-status (fn [bin]
+                     (if (fs/which bin)
+                       "✓"
+                       "⍻"))]
+    (println "Required dependencies:")
+    (doseq [bin ["bb"]]
+      (println (bin-status bin) bin))
+    (println)
+    (println "Optional dependencies:")
+    (doseq [bin ["fzf" "rlwrap"]]
+      (println (bin-status bin) bin))))
+
+(def dispatch-table
+  [{:cmds ["doctor"] :fn cmd-doctor}
+   {:cmds ["debug"] :fn cmd-debug}
+   {:cmds [] :fn cmd-slideshow :cmd-opts [:root]}])
+
+(defn -main2 [& args]
+  (cli/dispatch dispatch-table args))
+
 (when (= *file* (System/getProperty "babashka.file"))
-  (apply (if (= "--debug" (first *command-line-args*)) -debug -main)
+  (apply -main2 *command-line-args*)
+  #_
+  (apply (if (= "--debug" (first *command-line-args*)) cmd-debug oldmain)
          *command-line-args*))
