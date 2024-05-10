@@ -85,7 +85,7 @@
                     (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides 0))))
 
-(defn cmd-debug [& _args]
+(defn cmd-debug [_opts]
   (with-stdin-char-by-char
     (let [k (.read System/in)]
       (prn [k (type k)])
