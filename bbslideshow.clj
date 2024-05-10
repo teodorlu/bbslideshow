@@ -79,12 +79,6 @@
 
           (do (prn "command found") nil))))))
 
-(defn oldmain [& args]
-  (let [root (or (first args) ".")
-        slides (->> (slide-files root slides-glob-pattern)
-                    (mapv str))]
-    (with-stdin-char-by-char (navigate-loop slides 0))))
-
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
         slides (->> (slide-files root slides-glob-pattern)
@@ -115,11 +109,8 @@
    {:cmds ["debug"] :fn cmd-debug}
    {:cmds [] :fn cmd-slideshow :cmd-opts [:root]}])
 
-(defn -main2 [& args]
+(defn -main [& args]
   (cli/dispatch dispatch-table args))
 
 (when (= *file* (System/getProperty "babashka.file"))
-  (apply -main2 *command-line-args*)
-  #_
-  (apply (if (= "--debug" (first *command-line-args*)) cmd-debug oldmain)
-         *command-line-args*))
+  (apply -main *command-line-args*))
