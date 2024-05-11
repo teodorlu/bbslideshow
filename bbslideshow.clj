@@ -59,7 +59,9 @@
 
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
-    (let [the-slides (slides-fn)]
+    (let [the-slides (slides-fn)
+          press-enter-to-continue #(do (println "Press ENTER to continue")
+                                       (.read System/in))]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
           (println))
@@ -73,8 +75,7 @@
             :bbslideshow/command-not-found
             (do
               (prn [:bbslideshow/command-not-found {:character character}])
-              (println "Press ENTER to continue")
-              (.read System/in)
+              (press-enter-to-continue)
               (recur index))
 
             :bbslideshow/next-slide
@@ -92,7 +93,11 @@
             :bbslideshow/quit
             nil
 
-            (do (prn "command found") nil)))))))
+            (do
+              (prn [:bbslideshow/command-found-but-not-handled
+                    {:character character}])
+              (press-enter-to-continue)
+              (recur index))))))))
 
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
