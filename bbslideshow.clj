@@ -7,7 +7,7 @@
    [babashka.cli :as cli]))
 
 (def slide-top-padding 20)
-(def slides-glob-pattern "**/*.slide.txt")
+(def default-slides-glob-pattern "**/*.slide.txt")
 
 (defn slide-files [root glob-pattern]
   (->>
@@ -16,7 +16,7 @@
 
 (comment
 
-  (def example-slides (slide-files "." slides-glob-pattern))
+  (def example-slides (slide-files "." default-slides-glob-pattern))
 
   (get example-slides 4)
   :rcf)
@@ -101,9 +101,9 @@
 
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
-        slides (->> (slide-files root slides-glob-pattern)
+        slides (->> (slide-files root default-slides-glob-pattern)
                     (mapv str))
-        slides-fn #(->> (slide-files root slides-glob-pattern)
+        slides-fn #(->> (slide-files root default-slides-glob-pattern)
                     (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
