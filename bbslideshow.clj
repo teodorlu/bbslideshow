@@ -64,6 +64,9 @@
         (dotimes [_ slide-top-padding]
           (println))
         (print (slurp (fs/file slide)))
+        (println )
+        (println (str "                                    "
+                      (inc index) "/" (count the-slides)))
         (flush)
         (let [character (char (.read System/in))]
           (case (get keymap character :bbslideshow/command-not-found)
