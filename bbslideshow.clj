@@ -59,8 +59,7 @@
 
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
-    (let [;; a-slide (get (slides-fn) index)
-          the-slides (slides-fn)]
+    (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
           (println))
