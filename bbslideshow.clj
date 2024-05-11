@@ -59,30 +59,31 @@
 
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
-    (when-let [slide (get (slides-fn) index)]
-      (dotimes [_ slide-top-padding]
-        (println))
-      (print (slurp (fs/file slide)))
-      (flush)
-      (let [character (char (.read System/in))]
-        (case (get keymap character :bbslideshow/command-not-found)
-          :bbslideshow/command-not-found
-          (do
-            (prn [:bbslideshow/command-not-found {:character character}])
-            (println "Press ENTER to continue")
-            (.read System/in)
-            (recur index))
+    (when-let [a-slide (get (slides-fn) index)]
+      (let [slide a-slide]
+        (dotimes [_ slide-top-padding]
+          (println))
+        (print (slurp (fs/file slide)))
+        (flush)
+        (let [character (char (.read System/in))]
+          (case (get keymap character :bbslideshow/command-not-found)
+            :bbslideshow/command-not-found
+            (do
+              (prn [:bbslideshow/command-not-found {:character character}])
+              (println "Press ENTER to continue")
+              (.read System/in)
+              (recur index))
 
-          :bbslideshow/next-slide
-          (recur (inc index))
+            :bbslideshow/next-slide
+            (recur (inc index))
 
-          :bbslideshow/prev-slide
-          (recur (dec index))
+            :bbslideshow/prev-slide
+            (recur (dec index))
 
-          :bbslideshow/quit
-          nil
+            :bbslideshow/quit
+            nil
 
-          (do (prn "command found") nil))))))
+            (do (prn "command found") nil)))))))
 
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
