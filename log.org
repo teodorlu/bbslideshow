@@ -1,0 +1,6 @@
+#+title: BBslideshow worklog
+
+* 2024-05-11
+** making slides and making the slide tool at the same time is super smooth
+slide tool is here.
+slides at https://github.com/teodorlu/babashka-i-praksis/tree/647338865beb66bbbf77ed6cd48adee24b95e9db/01-presentasjoner/1-velkommen/.
