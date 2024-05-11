@@ -77,6 +77,9 @@
           :bbslideshow/prev-slide
           (recur (dec index))
 
+          :bbslideshow/quit
+          nil
+
           (do (prn "command found") nil))))))
 
 (defn cmd-slideshow [opts]
