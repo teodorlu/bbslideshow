@@ -26,7 +26,9 @@
    \k :bbslideshow/prev-slide
    \q :bbslideshow/quit
    \f :bbslideshow/find-slide
-   \s :bbslideshow/interactive-babashka-shell})
+   \s :bbslideshow/interactive-babashka-shell
+   ;; ESC appears to be \[
+   \[ :bbslideshow/quit})
 
 (comment
   (char 103)
@@ -70,11 +72,11 @@
         (println (str "                                    "
                       (inc index) "/" (count the-slides)))
         (flush)
-        (let [character (char (.read System/in))]
-          (case (get keymap character :bbslideshow/command-not-found)
+        (let [key (.read System/in)]
+          (case (get keymap (char key) :bbslideshow/command-not-found)
             :bbslideshow/command-not-found
             (do
-              (prn [:bbslideshow/command-not-found {:character character}])
+              (prn [:bbslideshow/command-not-found {:character (char key) :key key}])
               (press-enter-to-continue)
               (recur index))
 
@@ -95,15 +97,14 @@
 
             (do
               (prn [:bbslideshow/command-found-but-not-handled
-                    {:character character}])
+                    {:character (char key) :key key}])
               (press-enter-to-continue)
               (recur index))))))))
 
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
-        slides (->> (slide-files root default-slides-glob-pattern)
-                    (mapv str))
-        slides-fn #(->> (slide-files root default-slides-glob-pattern)
+        glob-pattern (:glob-pattern opts default-slides-glob-pattern)
+        slides-fn #(->> (slide-files root glob-pattern)
                     (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
@@ -129,7 +130,7 @@
 (def dispatch-table
   [{:cmds ["doctor"] :fn cmd-doctor}
    {:cmds ["debug"] :fn cmd-debug}
-   {:cmds [] :fn cmd-slideshow :cmd-opts [:root]}])
+   {:cmds [] :fn cmd-slideshow :cmd-opts [:root :glob-pattern]}])
 
 (defn -main [& args]
   (cli/dispatch dispatch-table args))
