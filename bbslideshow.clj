@@ -78,10 +78,16 @@
               (recur index))
 
             :bbslideshow/next-slide
-            (recur (inc index))
+            (let [next-index (inc index)]
+              (if (contains? the-slides next-index)
+                (recur next-index)
+                (recur index)))
 
             :bbslideshow/prev-slide
-            (recur (dec index))
+            (let [next-index (dec index)]
+              (if (contains? the-slides next-index)
+                (recur next-index)
+                (recur index)))
 
             :bbslideshow/quit
             nil
