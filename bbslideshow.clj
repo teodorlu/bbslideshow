@@ -57,9 +57,9 @@
      (finally
        (-enable-reading-char-by-char!))))
 
-(defn navigate-loop [slides start-at-index]
+(defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
-    (when-let [slide (get slides index)]
+    (when-let [slide (get (slides-fn) index)]
       (dotimes [_ slide-top-padding]
         (println))
       (print (slurp (fs/file slide)))
@@ -69,7 +69,9 @@
           :bbslideshow/command-not-found
           (do
             (prn [:bbslideshow/command-not-found {:character character}])
-            nil)
+            (println "Press ENTER to continue")
+            (.read System/in)
+            (recur index))
 
           :bbslideshow/next-slide
           (recur (inc index))
@@ -85,8 +87,10 @@
 (defn cmd-slideshow [opts]
   (let [root (:root opts ".")
         slides (->> (slide-files root slides-glob-pattern)
+                    (mapv str))
+        slides-fn #(->> (slide-files root slides-glob-pattern)
                     (mapv str))]
-    (with-stdin-char-by-char (navigate-loop slides 0))))
+    (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
 (defn cmd-debug [_opts]
   (with-stdin-char-by-char
