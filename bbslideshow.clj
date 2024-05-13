@@ -59,11 +59,14 @@
      (finally
        (-enable-reading-char-by-char!))))
 
+(defn press-enter-to-continue []
+  (println "Press ENTER to continue")
+  (flush)
+  (.read System/in))
+
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
-    (let [the-slides (slides-fn)
-          press-enter-to-continue #(do (println "Press ENTER to continue")
-                                       (.read System/in))]
+    (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
           (println))
@@ -130,7 +133,7 @@
 (def dispatch-table
   [{:cmds ["doctor"] :fn cmd-doctor}
    {:cmds ["debug"] :fn cmd-debug}
-   {:cmds [] :fn cmd-slideshow :cmd-opts [:root :glob-pattern]}])
+   {:cmds [] :fn cmd-slideshow :cmds-opts [:root :glob-pattern]}])
 
 (defn -main [& args]
   (cli/dispatch dispatch-table args))
