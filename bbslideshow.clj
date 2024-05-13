@@ -105,16 +105,11 @@
               (recur index))))))))
 
 (defn cmd-slideshow [opts+args]
-  (prn opts+args)
-  (press-enter-to-continue)
   (let [opts (:opts opts+args)
         root (:root opts ".")
         glob-pattern (:glob-pattern opts default-slides-glob-pattern)
-        slides-fn #(do
-                     (prn glob-pattern)
-                     (press-enter-to-continue)
-                     (->> (slide-files root glob-pattern)
-                          (mapv str)))]
+        slides-fn #(->> (slide-files root glob-pattern)
+                        (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
 (defn cmd-debug [_opts]
