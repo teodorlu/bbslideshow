@@ -7,7 +7,7 @@
    [babashka.cli :as cli]))
 
 (def slide-top-padding 80)
-(def default-slides-glob-pattern "**/*.slide.txt")
+(def default-slides-glob-pattern "**/*.txt")
 
 (defn slide-files [root glob-pattern]
   (->>
