@@ -1,0 +1,8 @@
+bbslideshow lets you write some code on your slide and load a REPL with that
+code loaded.
+
+bbslideshow will read the last paragraph of your slide.
+It expects two forms.
+
+:bbslideshow.api/exec
+(babashka.process/shell "nvim")
