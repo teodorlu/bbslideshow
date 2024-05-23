@@ -65,7 +65,7 @@
   (.read System/in))
 
 (defn modeline [index the-slides]
-  (str (apply str (repeat 20 "_"))
+  (str (apply str (repeat 20 "—"))
        "\n"
        (str (inc index) "/" (count the-slides))
        " "
