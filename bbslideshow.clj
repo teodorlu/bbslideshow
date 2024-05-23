@@ -67,7 +67,7 @@
 (defn modeline [index the-slides]
   (str (apply str (repeat 20 "—"))
        "\n"
-       (str (inc index) "/" (count the-slides))
+       (str (format "%2d" (inc index)) "/" (count the-slides))
        " "
        (fs/file-name (get the-slides index))))
 
