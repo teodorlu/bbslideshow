@@ -64,6 +64,11 @@
   (flush)
   (.read System/in))
 
+(defn modeline [index the-slides]
+  (str (str (inc index) "/" (count the-slides))
+       " "
+       (fs/file-name (get the-slides index))))
+
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
     (let [the-slides (slides-fn)]
@@ -72,8 +77,7 @@
           (println))
         (print (slurp (fs/file slide)))
         (println )
-        (println (str "                                    "
-                      (inc index) "/" (count the-slides)))
+        (println (modeline index the-slides))
         (flush)
         (let [key (.read System/in)]
           (case (get keymap (char key) :bbslideshow/command-not-found)
