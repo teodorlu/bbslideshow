@@ -2,8 +2,6 @@
 
 Write slides as plain text, then show them from a terminal.
 
-Supports quick navigation forwards & back, selecting any slide, and quickly launching a babashka REPL.
-
 ## Usage
 
 1. Write your slides with the `.slide.txt` extension.

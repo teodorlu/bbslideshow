@@ -1,5 +1,7 @@
 # `bbslideshow`: plans for the future
 
+Supports quick navigation forwards & back, selecting any slide, and quickly launching a babashka REPL.
+
 Planned hotkeys:
 
 | Hotkey | Action                |
