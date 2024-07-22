@@ -18,19 +18,13 @@ Once `bbslideshow` has started, you can use hotkeys to navigate between slides:
 |--------|-----------------------|
 | `j`    | Next slide            |
 | `k`    | Previous slide        |
-| `f`    | Fuzzy-find any slide  |
-| `s`    | Enter a babashka REPL |
 | `q`    | Quit                  |
 
-## Dependencies
+## Required dependencies
 
-| dependency | optional? | min version | how to install                      | purpose                                    |
-|------------|-----------|-------------|-------------------------------------|--------------------------------------------|
-| Babashka   | required  | v1.3.190    | https://babashka.org/               | `bbslideshow` runs on Babashka             |
-| Fzf        | optional  | 0.50.0      | https://github.com/junegunn/fzf     | `fzf` powers fuzzy-find slide              |
-| rlwrap     | optional  | 0.46.1      | https://github.com/hanslub42/rlwrap | `rlwrap` powers the built-in babashka REPL |
-
-When running `bbslideshow` without optional dependencies installed, certain hotkeys will not work.
+| dependency | min version | how to install        | purpose                        |
+|------------|-------------|-----------------------|--------------------------------|
+| Babashka   | v1.3.190    | https://babashka.org/ | `bbslideshow` runs on Babashka |
 
 ## Installing
 
