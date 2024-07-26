@@ -63,6 +63,20 @@
   (flush)
   (.read System/in))
 
+(defn println-ui [s]
+  (assert (string? s))
+  (babashka.process/shell "echo" s)
+  nil)
+
+#_ (do (print-ui "123") (print-ui "456") (print-ui "\n"))
+
+(defn print-ui [s]
+  (assert (string? s))
+  (babashka.process/shell "echo -n" s)
+  nil)
+
+#_ (do (print-ui "123") (print-ui "456") (print-ui "\n"))
+
 (defn modeline [index the-slides]
   (str (apply str (repeat 20 "—"))
        "\n"
