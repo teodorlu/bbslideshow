@@ -6,6 +6,35 @@
    [babashka.process :as process]
    [babashka.cli :as cli]))
 
+(def ^:dynamic *print-ui-with-echo-shellout* false)
+
+(defn println-ui [s]
+  (assert (string? s))
+  (if *print-ui-with-echo-shellout*
+    (babashka.process/shell "echo" s)
+    (println s))
+  nil)
+
+(defn print-ui [s]
+  (assert (string? s))
+  (if *print-ui-with-echo-shellout*
+    (babashka.process/shell "echo -n" s)
+    (print s))
+  nil)
+
+(comment
+  (println-ui "abc 123")
+  (binding [*print-ui-with-echo-shellout* true]
+    (print-ui "abc 123"))
+  (do (print-ui "123")
+      (print-ui "456")
+      (print-ui "\n"))
+  (binding [*print-ui-with-echo-shellout* true]
+    (print-ui "123")
+    (print-ui "456")
+    (print-ui "\n"))
+  :rcf)
+
 (def slide-top-padding 80)
 (def default-slides-glob-pattern "**/*.txt")
 
@@ -63,19 +92,6 @@
   (flush)
   (.read System/in))
 
-(defn println-ui [s]
-  (assert (string? s))
-  (babashka.process/shell "echo" s)
-  nil)
-
-#_ (do (print-ui "123") (print-ui "456") (print-ui "\n"))
-
-(defn print-ui [s]
-  (assert (string? s))
-  (babashka.process/shell "echo -n" s)
-  nil)
-
-#_ (do (print-ui "123") (print-ui "456") (print-ui "\n"))
 
 (defn modeline [index the-slides]
   (str (apply str (repeat 20 "—"))
