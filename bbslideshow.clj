@@ -12,12 +12,11 @@
 (defn slide-files [root glob-pattern]
   (->>
    (fs/glob root glob-pattern)
-   (sort-by str)))
+   (sort-by str)
+   vec))
 
 (comment
-
   (def example-slides (slide-files "." default-slides-glob-pattern))
-
   (get example-slides 4)
   :rcf)
 
