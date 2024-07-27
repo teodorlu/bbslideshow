@@ -113,8 +113,10 @@
 (defn cmd-slideshow [opts+args]
   (let [opts (:opts opts+args)
         root (:root opts ".")
-        glob-pattern (:glob-pattern opts default-slides-glob-pattern)
-        slides-fn #(->> (slide-files root [glob-pattern])
+        glob-patterns (if (:glob-pattern opts)
+                        [(:glob-pattern opts)]
+                        [default-slides-glob-pattern])
+        slides-fn #(->> (slide-files root glob-patterns)
                         (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
