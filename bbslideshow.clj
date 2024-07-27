@@ -6,13 +6,12 @@
    [babashka.process :as process]
    [babashka.cli :as cli]))
 
-
 (def slide-top-padding 80)
 (def default-slides-glob-pattern "**/*.txt")
 
-(defn slide-files [root glob-pattern]
+(defn slide-files [root glob-patterns]
   (->>
-   (fs/glob root glob-pattern)
+   (mapcat (partial fs/glob root) glob-patterns)
    (sort-by str)
    vec))
 
@@ -115,7 +114,7 @@
   (let [opts (:opts opts+args)
         root (:root opts ".")
         glob-pattern (:glob-pattern opts default-slides-glob-pattern)
-        slides-fn #(->> (slide-files root glob-pattern)
+        slides-fn #(->> (slide-files root [glob-pattern])
                         (mapv str))]
     (with-stdin-char-by-char (navigate-loop slides-fn 0))))
 
