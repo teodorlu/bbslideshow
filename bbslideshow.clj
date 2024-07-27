@@ -59,10 +59,9 @@
        (-enable-reading-char-by-char!))))
 
 (defn press-enter-to-continue []
-  (println "Press ENTER to continue")
+  (.println System/out "Press ENTER to continue")
   (flush)
   (.read System/in))
-
 
 (defn modeline [index the-slides]
   (str (apply str (repeat 20 "—"))
@@ -76,11 +75,11 @@
     (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
-          (println))
-        (print (slurp (fs/file slide)))
-        (println )
-        (println (modeline index the-slides))
-        (flush)
+          (.println System/out))
+        (.print System/out (slurp (fs/file slide)))
+        (.println System/out)
+        (.println System/out (modeline index the-slides))
+        (. System/out (flush))
         (let [key (.read System/in)]
           (case (get keymap (char key) :bbslideshow/command-not-found)
             :bbslideshow/command-not-found
@@ -131,13 +130,13 @@
                      (if (fs/which bin)
                        "✓"
                        "⍻"))]
-    (println "Required dependencies:")
+    (.println System/out "Required dependencies:")
     (doseq [bin ["bb"]]
-      (println (bin-status bin) bin))
-    (println)
-    (println "Optional dependencies:")
+      (.println System/out (bin-status bin) bin))
+    (.println System/out)
+    (.println System/out "Optional dependencies:")
     (doseq [bin ["fzf" "rlwrap"]]
-      (println (bin-status bin) bin))))
+      (.println System/out (bin-status bin) bin))))
 
 (def dispatch-table
   [{:cmds ["doctor"] :fn cmd-doctor}
