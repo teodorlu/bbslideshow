@@ -1,1 +1,1 @@
-{:paths ["."]}
+{:deps {io.github.teodorlu/bbslideshow {:local/root "."}}}
