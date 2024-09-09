@@ -140,10 +140,6 @@
                        "⍻"))]
     (println "Required dependencies:")
     (doseq [bin ["bb"]]
-      (println (bin-status bin) bin))
-    (println)
-    (println "Optional dependencies:")
-    (doseq [bin ["fzf" "rlwrap"]]
       (println (bin-status bin) bin))))
 
 (def dispatch-table
