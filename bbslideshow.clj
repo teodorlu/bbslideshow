@@ -2,9 +2,17 @@
 
 (ns bbslideshow
   (:require
+   [babashka.cli :as cli]
    [babashka.fs :as fs]
    [babashka.process :as process]
-   [babashka.cli :as cli]))
+   [clojure.string :as str])
+  (:refer-clojure :exclude [println print]))
+
+(defn print [& ss]
+  (.print System/out (str/join " " ss)))
+
+(defn println [& ss]
+  (.println System/out (str/join " " ss)))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -59,7 +67,7 @@
        (-enable-reading-char-by-char!))))
 
 (defn press-enter-to-continue []
-  (.println System/out "Press ENTER to continue")
+  (println "Press ENTER to continue")
   (flush)
   (.read System/in))
 
@@ -75,10 +83,10 @@
     (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
-          (.println System/out))
-        (.print System/out (slurp (fs/file slide)))
-        (.println System/out)
-        (.println System/out (modeline index the-slides))
+          (println))
+        (print (slurp (fs/file slide)))
+        (println)
+        (println (modeline index the-slides))
         (. System/out (flush))
         (let [key (.read System/in)]
           (case (get keymap (char key) :bbslideshow/command-not-found)
@@ -130,13 +138,13 @@
                      (if (fs/which bin)
                        "✓"
                        "⍻"))]
-    (.println System/out "Required dependencies:")
+    (println "Required dependencies:")
     (doseq [bin ["bb"]]
-      (.println System/out (bin-status bin) bin))
-    (.println System/out)
-    (.println System/out "Optional dependencies:")
+      (println (bin-status bin) bin))
+    (println)
+    (println "Optional dependencies:")
     (doseq [bin ["fzf" "rlwrap"]]
-      (.println System/out (bin-status bin) bin))))
+      (println (bin-status bin) bin))))
 
 (def dispatch-table
   [{:cmds ["doctor"] :fn cmd-doctor}
