@@ -3,6 +3,8 @@
    [clojure.test :refer [deftest testing is]]
    [bbslideshow]))
 
+(deftest addition (is (= 2 (+ 1 1))))
+
 (deftest highlight-test
   (testing "highlights one backticked word"
     (is (= "We can now run [1mbbslideshow[m from a JVM"
