@@ -5,14 +5,25 @@
    [babashka.cli :as cli]
    [babashka.fs :as fs]
    [babashka.process :as process]
-   [clojure.string :as str])
-  (:refer-clojure :exclude [println print]))
+   [clj-commons.ansi :as ansi]
+   [clojure.string :as str]))
 
-(defn print [& ss]
-  (.print System/out (str/join " " ss)))
+fs/list-dir
 
-(defn println [& ss]
-  (.println System/out (str/join " " ss)))
+
+(defn console-print
+  "Forces the output to console, even with NREPL"
+  [& ss]
+  (binding [*out* (.writer (System/console))]
+    (apply print ss)
+    (flush)))
+
+(defn console-println [& ss]
+  (binding [*out* (.writer (System/console))]
+    (apply println ss)))
+
+(console-println
+ (ansi/compose [:green "hi"]))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -22,6 +33,14 @@
    (mapcat (partial fs/glob root) glob-patterns)
    (sort-by str)
    vec))
+
+(defn highlight [s]
+  (str/replace s
+               #"`(.*)`"
+               (fn [[_ code-str]]
+                 (ansi/compose [:bold code-str]))))
+
+#_(console-println (highlight "We can now run `bbslideshow` `another` from a JVM"))
 
 (comment
   (def example-slides (slide-files "." default-slides-glob-patterns))
@@ -84,7 +103,7 @@
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
           (println))
-        (print (slurp (fs/file slide)))
+        (console-print (highlight (slurp (fs/file slide))))
         (println)
         (println (modeline index the-slides))
         (. System/out (flush))
