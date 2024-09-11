@@ -1,0 +1,9 @@
+Teodor har done a tiny bit of work since last time.
+
+- We can now run `bbslideshow` from a JVM REPL or a bb REPL
+
+- I've got a JVM REPL running, and can run the babashka script on the side
+
+  Reason: CIDER's testing functionality doesn't appear to work out of the box
+  with a babashka REPL, so I suggest REPL + tests from a JVM REPL, and run the
+  script on the side.

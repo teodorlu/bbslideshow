@@ -1,0 +1,25 @@
+Additional tasks for the workshop.
+
+Easy:
+
+- Add key binding to refresh current slide (eg r)
+- Single backtick to bold a part of the slide
+
+Medium:
+
+- Highlight Clojure syntax
+- Triple backticks to shell out to pygments for syntax highlighting (Medium)
+
+Refactoring:
+
+- Increase testability of navigate-loop
+
+More ideas:
+
+* Open a URL from the slide from a key press
+* Eval Clojure from the slide from a key press
+* Eval a shell command from the slide from a key press
+
+Hard:
+
+* Make a mini console notebook
