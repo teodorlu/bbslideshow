@@ -22,9 +22,6 @@ fs/list-dir
   (binding [*out* (.writer (System/console))]
     (apply println ss)))
 
-(console-println
- (ansi/compose [:green "hi"]))
-
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
 
