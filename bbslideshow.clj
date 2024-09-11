@@ -8,9 +8,6 @@
    [clj-commons.ansi :as ansi]
    [clojure.string :as str]))
 
-fs/list-dir
-
-
 (defn console-print
   "Forces the output to console, even with NREPL"
   [& ss]
