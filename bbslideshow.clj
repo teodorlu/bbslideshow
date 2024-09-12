@@ -4,18 +4,8 @@
   (:require
    [babashka.cli :as cli]
    [babashka.fs :as fs]
-   [babashka.process :as process]))
-
-(defn console-print
-  "Forces the output to console, even with NREPL"
-  [& ss]
-  (binding [*out* (.writer (System/console))]
-    (apply print ss)
-    (flush)))
-
-(defn console-println [& ss]
-  (binding [*out* (.writer (System/console))]
-    (apply println ss)))
+   [babashka.process :as process]
+   [utils :refer [console-print console-println]]))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -70,8 +60,7 @@
        (-enable-reading-char-by-char!))))
 
 (defn press-enter-to-continue []
-  (println "Press ENTER to continue")
-  (flush)
+  (console-println "Press ENTER to continue")
   (.read System/in))
 
 (defn modeline [index the-slides]
@@ -86,11 +75,10 @@
     (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
-          (println))
+          (console-println))
         (console-print (slurp (fs/file slide)))
-        (println)
-        (println (modeline index the-slides))
-        (. System/out (flush))
+        (console-println)
+        (console-println (modeline index the-slides))
         (let [key (.read System/in)]
           (case (get keymap (char key) :bbslideshow/command-not-found)
             :bbslideshow/command-not-found
@@ -141,9 +129,9 @@
                      (if (fs/which bin)
                        "✓"
                        "⍻"))]
-    (println "Required dependencies:")
+    (console-println "Required dependencies:")
     (doseq [bin ["bb"]]
-      (println (bin-status bin) bin))))
+      (console-println (bin-status bin) bin))))
 
 (def dispatch-table
   [{:cmds ["doctor"] :fn cmd-doctor}
