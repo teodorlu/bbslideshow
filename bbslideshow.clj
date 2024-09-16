@@ -115,18 +115,8 @@
     (finally
       (read-line-by-line!))))
 
-(defn cmd-doctor [_]
-  (let [bin-status (fn [bin]
-                     (if (fs/which bin)
-                       "✓"
-                       "⍻"))]
-    (console-println "Required dependencies:")
-    (doseq [bin ["bb"]]
-      (console-println (bin-status bin) bin))))
-
 (def dispatch-table
-  [{:cmds ["doctor"] :fn cmd-doctor}
-   {:cmds ["debug"] :fn cmd-debug}
+  [{:cmds ["debug"] :fn cmd-debug}
    {:cmds [] :fn cmd-slideshow :args->opts [:root :glob-pattern]}])
 
 (defn -main [& args]
