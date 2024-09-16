@@ -1,0 +1,3 @@
+I used to emphasize programming language theory
+
+    and not think about programming practice.
