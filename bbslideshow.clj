@@ -23,9 +23,12 @@
 
 (def keymap
   {\j :bbslideshow/next-slide
+   \n :bbslideshow/next-slide
    \k :bbslideshow/prev-slide
+   \p :bbslideshow/prev-slide
+
    \q :bbslideshow/quit
-   \f :bbslideshow/find-slide
+
    \s :bbslideshow/interactive-babashka-shell
    ;; ESC appears to be \[
    \[ :bbslideshow/quit})
