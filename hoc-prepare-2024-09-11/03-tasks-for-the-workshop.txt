@@ -16,10 +16,10 @@ Refactoring:
 
 More ideas:
 
-* Open a URL from the slide from a key press
-* Eval Clojure from the slide from a key press
-* Eval a shell command from the slide from a key press
+- Open a URL from the slide from a key press
+- Eval Clojure from the slide from a key press
+- Eval a shell command from the slide from a key press
 
 Hard:
 
-* Make a mini console notebook
+- Make a mini console notebook
