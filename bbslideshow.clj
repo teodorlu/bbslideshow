@@ -37,27 +37,11 @@
   (char 127)
   (char 32))
 
-(defn -enable-reading-char-by-char! []
+(defn read-char-by-char! []
   (process/shell "stty -icanon -echo"))
 
-(defn -disable-reading-char-by-char! []
+(defn read-line-by-line! []
   (process/shell "stty icanon echo"))
-
-(defmacro with-stdin-char-by-char
-  [& body]
-  `(try
-     (-enable-reading-char-by-char!)
-     ~@body
-     (finally
-       (-disable-reading-char-by-char!))))
-
-(defmacro with-stdin-line-by-line
-  [& body]
-  `(try
-     (-disable-reading-char-by-char!)
-     ~@body
-     (finally
-       (-enable-reading-char-by-char!))))
 
 (defn press-enter-to-continue []
   (console-println "Press ENTER to continue")
@@ -116,13 +100,20 @@
                         default-slides-glob-patterns)
         slides-fn #(->> (slide-files root glob-patterns)
                         (mapv str))]
-    (with-stdin-char-by-char (navigate-loop slides-fn 0))))
+    (try
+      (read-char-by-char!)
+      (navigate-loop slides-fn 0)
+      (finally
+        (read-line-by-line!)))))
 
 (defn cmd-debug [_opts]
-  (with-stdin-char-by-char
+  (try
+    (read-char-by-char!)
     (let [k (.read System/in)]
       (prn [k (type k)])
-      (prn (get keymap (char k) :bbslideshow/command-not-found)))))
+      (prn (get keymap (char k) :bbslideshow/command-not-found)))
+    (finally
+      (read-line-by-line!))))
 
 (defn cmd-doctor [_]
   (let [bin-status (fn [bin]
