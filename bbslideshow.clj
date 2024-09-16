@@ -5,7 +5,7 @@
    [babashka.cli :as cli]
    [babashka.fs :as fs]
    [babashka.process :as process]
-   [utils :refer [console-print console-println]]))
+   [utils :refer [console-print console-println console-read-key]]))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -66,7 +66,7 @@
         (console-print (slurp (fs/file slide)))
         (console-println)
         (console-println (modeline index the-slides))
-        (let [key (.read System/in)]
+        (let [key (console-read-key)]
           (case (get keymap (char key) :bbslideshow/command-not-found)
             :bbslideshow/command-not-found
             (do
@@ -94,6 +94,10 @@
                     {:character (char key) :key key}])
               (press-enter-to-continue)
               (recur index))))))))
+
+#_ (read-char-by-char!)
+#_ (def slides-fn #(mapv str (slide-files "." default-slides-glob-patterns)))
+#_ (navigate-loop slides-fn 0)
 
 (defn cmd-slideshow [opts+args]
   (let [opts (:opts opts+args)
