@@ -2,9 +2,6 @@
 
 ---Teodor's mental image of Christian Johansen
 
-    (Any lack of nuance to this statement has been
-     removed by Teodor for your clarity and amusement)
-
 github.com/
            cjohansen/dumdom
            cjohansen/portfolio
