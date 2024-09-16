@@ -1,0 +1,36 @@
+“Dependencies are best avoided.”
+
+---Teodor's mental image of Michiel Borkent
+
+    (Any lack of nuance to this statement has been
+     removed by Teodor for your clarity and amusement)
+
+
+github.com/
+           babashka/babashka
+           babashka/bbin
+           babashka/cli
+           babashka/fs
+           babashka/http-client
+           babashka/nbb
+           babashka/neil
+           babashka/pods
+           babashka/scittle
+
+           borkdude/carve
+           borkdude/clj2el
+           borkdude/deps.clj
+           borkdude/edamame
+           borkdude/html # a hiccup alternative
+           borkdude/jet
+           borkdude/lein2deps
+           borkdude/quickblog
+           borkdude/quickdoc
+           borkdude/rewrite-edn
+
+           clj-kondo/clj-kondo
+
+           squint-cljs/cherry
+           squint-cljs/squint
+
+(this list is stupid long)
