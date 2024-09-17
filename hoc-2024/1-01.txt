@@ -1,6 +1,6 @@
 Welcome to Babashka in Practice!
 
-We are
+We are:
 
   Christian Johansen
   Michiel Borkent
