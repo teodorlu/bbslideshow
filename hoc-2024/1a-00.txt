@@ -1,0 +1,13 @@
+Welcome to Babashka in Practice!
+
+We are
+
+  Christian Johansen
+  Michiel Borkent
+  Teodor Heggelund
+
+Agenda:
+
+| part 1 | Rationale (Teodor)          |
+| part 2 | Christian and Michiel pairs |
+| part 3 | Everybody pairs 🤞          |
