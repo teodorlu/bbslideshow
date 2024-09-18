@@ -9,6 +9,9 @@ Medium:
 
 - Highlight Clojure syntax
 - Triple backticks to shell out to pygments for syntax highlighting (Medium)
+  List available styles: `pygmentize -L`
+  Highlight: `cat bbslideshow.clj | pygmentize -O style=monokai`
+
 
 Refactoring:
 
