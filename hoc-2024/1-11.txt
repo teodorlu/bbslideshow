@@ -1,0 +1,9 @@
+During pair programming, I invite you to:
+
+    Please be kind![1]
+
+    Highlight *intent*: why do we want this change?
+
+    Ask questions! (Don't only make "change commands".)
+
+[1]: as Matt Huebert would say
