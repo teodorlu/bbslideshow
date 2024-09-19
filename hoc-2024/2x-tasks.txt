@@ -1,31 +1,19 @@
-Tasks for the workshop.
+Teodor recommended tasks:
 
-Easy:
+1. Add key binding to refresh current slide (eg r)
+2. Single * to bold a part of the slide
+3. Eval Clojure from the slide from a key press
+4. Make a mini console notebook.
+   1. Find Clojure expressions in the slide
+   2. Evaluate expressions
+   3. Print expressions and results
 
-- Add key binding to refresh current slide (eg r)
-- Single backtick to bold a part of the slide
-
-Medium:
+Other task options:
 
 - Highlight Clojure syntax
 - Triple backticks to shell out to pygments for syntax highlighting (Medium)
   List available styles: `pygmentize -L`
   Highlight: `cat bbslideshow.clj | pygmentize -O style=monokai`
-
-
-Refactoring:
-
-- Increase testability of navigate-loop
-
-More ideas:
-
+- Increase testability of navigate-loop (refactor)
 - Open a URL from the slide from a key press
-- Eval Clojure from the slide from a key press
 - Eval a shell command from the slide from a key press
-
-Hard:
-
-- Make a mini console notebook.
-  1. Find Clojure expressions in the slide
-  2. Evaluate expressions
-  3. Print expressions and results
