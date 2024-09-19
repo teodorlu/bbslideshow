@@ -5,7 +5,8 @@
    [babashka.cli :as cli]
    [babashka.fs :as fs]
    [babashka.process :as process]
-   [utils :refer [console-print console-println console-read-key]]))
+   [utils :refer [console-print console-println console-read-key]]
+   [clojure.string :as str]))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -57,13 +58,19 @@
        " "
        (fs/file-name (get the-slides index))))
 
+(defn terminal-height []
+  (-> (babashka.process/shell {:out :string} "tput lines")
+      :out
+      str/trim
+      parse-long))
+
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
     (let [the-slides (slides-fn)]
       (when-let [slide (get the-slides index)]
-        (dotimes [_ slide-top-padding]
-          (console-println))
         (console-print (slurp (fs/file slide)))
+        (dotimes [_ (- (terminal-height) (count (str/split-lines (slurp (fs/file slide)))) 3)]
+          (console-println))
         (console-println)
         (console-println (modeline index the-slides))
         (let [key (console-read-key)]
