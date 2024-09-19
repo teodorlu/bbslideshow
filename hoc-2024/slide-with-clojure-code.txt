@@ -1,0 +1,5 @@
+```clojure
+(defn render-slide [source-str]
+  (str/replace source-str #"`(.*?)`"
+               (ansi/compose [:green "$1"])))
+```

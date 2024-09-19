@@ -52,4 +52,6 @@
       (console-println))
   (-> (highlight "(re-find #\"dude\" \"dude\")")
       (console-println))
+
+  (highlight ":done")
   )

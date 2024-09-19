@@ -1,33 +1,30 @@
 (ns bb-libs-demo
   (:require [babashka.fs :as fs]
             [babashka.cli :as cli]
-            [babashka.process :as process]))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; babashka/fs tasks
-
-;; Task: list all txt files from the current directory
-fs/glob
-
-;; Task: find just the file names of those txt files
-fs/file-name
-
-;; Task: list all txt files from the current directory
-;; But those files MUST be instances of java.io.File
-;;     sun.nio.fs.UnixPath is not allowed.
-fs/file
-
-
+            [babashka.process :as process]
+            [clojure.string :as str]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; babashka/cli tasks
 
 ;; Dispatch [] to cmd-slideshow and ["debug"] to cmd-debug
 
-(defn cmd-slideshow [_] :cmd-slideshow)
-(defn cmd-debug [_] :cmd-debug)
+(defn cmd-slideshow [opts+args] opts+args)
+(defn cmd-debug [opts+args] opts+args)
+(defn cmd-textfiles [opts+args]
+  (let [extensions (:ext (:opts opts+args))
+        glob-expr (str/join "," extensions)]
+    (fs/glob "." (str "**/*.{" glob-expr "}"))))
 
-cli/dispatch
+(->>
+ (map str
+      (cli/dispatch [{:cmds ["txt"] :fn cmd-textfiles
+                      :spec {:ext {:coerce []}}}
+                     {:cmds [] :fn cmd-slideshow}]
+                    *command-line-args*))
+ (run! println))
+
+*command-line-args*
 
 []
 ["debug"]

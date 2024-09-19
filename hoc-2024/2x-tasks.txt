@@ -2,12 +2,12 @@ Tasks for the workshop.
 
 Easy:
 
-- Add key binding to refresh current slide (eg r)
-- Single backtick to bold a part of the slide
+- ✓ Add key binding to refresh current slide (eg r)
+- ✓ Single backtick to `:bold` a part of the slide
 
 Medium:
 
-- Highlight Clojure syntax
+- CURRENT Highlight Clojure syntax
 - Triple backticks to shell out to pygments for syntax highlighting (Medium)
   List available styles: `pygmentize -L`
   Highlight: `cat bbslideshow.clj | pygmentize -O style=monokai`
