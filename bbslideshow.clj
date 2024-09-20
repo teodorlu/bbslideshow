@@ -5,7 +5,11 @@
    [babashka.cli :as cli]
    [babashka.fs :as fs]
    [babashka.process :as process]
-   [utils :refer [console-print console-println console-read-key]]))
+   [utils :refer [console-print console-println console-read-key]]
+   [clj-commons.ansi :as ansi]
+   [clojure.string :as str]
+   [clojure.test :as t]
+   [edamame.core :as e]))
 
 (def slide-top-padding 80)
 (def default-slides-glob-patterns ["*.txt" "**/*.txt"])
@@ -26,6 +30,7 @@
    \n :bbslideshow/next-slide
    \k :bbslideshow/prev-slide
    \p :bbslideshow/prev-slide
+   \r :bbslideshow/refresh
 
    \q :bbslideshow/quit
 
@@ -55,7 +60,20 @@
        "\n"
        (str (format "%2d" (inc index)) "/" (count the-slides))
        " "
-       (fs/file-name (get the-slides index))))
+       (ansi/compose [:cyan (fs/file-name (get the-slides index))])))
+
+(defn render [raw-string]
+  (let [splitted-strig (str/split-lines raw-string)
+        xs (filter #(str/starts-with? % "    (") splitted-strig)
+        eval-input (str/join "" xs)
+        evaluated (load-string eval-input)]
+    (str
+     (str/replace raw-string
+                  #"\*([^*]*)\*"
+                  (fn [[_ inside]]
+                    (ansi/compose [:bold inside])))
+     (when (seq xs)
+       (str "\n;; => " evaluated)))))
 
 (defn navigate-loop [slides-fn start-at-index]
   (loop [index start-at-index]
@@ -63,7 +81,7 @@
       (when-let [slide (get the-slides index)]
         (dotimes [_ slide-top-padding]
           (console-println))
-        (console-print (slurp (fs/file slide)))
+        (console-print (render (slurp (fs/file slide))))
         (console-println)
         (console-println (modeline index the-slides))
         (let [key (console-read-key)]
@@ -85,6 +103,11 @@
               (if (contains? the-slides next-index)
                 (recur next-index)
                 (recur index)))
+
+            :bbslideshow/refresh
+            (do
+              (require 'bbslideshow :reload)
+              (recur index))
 
             :bbslideshow/quit
             nil
@@ -122,8 +145,13 @@
     (finally
       (read-line-by-line!))))
 
+(defn cmd-test [_opts]
+  (require 'bbslideshow-test)
+  (t/run-all-tests #"bbslideshow.*"))
+
 (def dispatch-table
   [{:cmds ["debug"] :fn cmd-debug}
+   {:cmds ["test"] :fn cmd-test}
    {:cmds [] :fn cmd-slideshow :args->opts [:root :glob-pattern]}])
 
 (defn -main [& args]

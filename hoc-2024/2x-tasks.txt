@@ -1,7 +1,9 @@
 Teodor recommended tasks:
 
 1. Add key binding to refresh current slide (eg r)
-2. Single * to bold a part of the slide
+2. Single star to *bold* a part of the slide
+2b. Add babashka test runner
+2c. When we refresh, we refresh code AND slides.
 3. Eval Clojure from the slide from a key press
 4. Make a mini console notebook.
    1. Find Clojure expressions in the slide

@@ -1,7 +1,3 @@
-Here is code:
+There is only one expression:
 
-     (+ 1 2)
-
-Here is more code:
-
-     (+ 3 4)
+    (+ 3 4)

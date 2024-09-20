@@ -7,16 +7,20 @@
 ;; babashka/fs tasks
 
 ;; Task: list all txt files from the current directory
-fs/glob
+(fs/glob "." "*/*.txt")
+(fs/list-dir "." "*.txt")
 
 ;; Task: find just the file names of those txt files
-fs/file-name
+(fs/file-name (fs/absolutize (fs/file "README.md")))
+(def files (fs/glob "." "*/*.txt"))
+(map fs/file-name files)
 
 ;; Task: list all txt files from the current directory
 ;; But those files MUST be instances of java.io.File
 ;;     sun.nio.fs.UnixPath is not allowed.
-fs/file
+(map fs/file files)
 
+(slurp (fs/file  (first files)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,7 +31,11 @@ fs/file
 (defn cmd-slideshow [_] :cmd-slideshow)
 (defn cmd-debug [_] :cmd-debug)
 
-cli/dispatch
+*command-line-args*
+
+(cli/dispatch [{:cmds ["debug"] :fn cmd-debug}
+               {:cmds [] :fn cmd-slideshow}]
+              [])
 
 []
 ["debug"]
@@ -42,4 +50,6 @@ cli/dispatch
 ;; (Firefox is found at /Applications/Firefox.app/Contents/MacOS/firefox on
 ;;  Teodor's computer)
 
-process/shell
+(process/shell "/Applications/Firefox.app/Contents/MacOS/firefox" "https://heartofclojure.eu")
+
+(fs/which "firefox")
